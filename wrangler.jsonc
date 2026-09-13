@@ -1,8 +1,13 @@
 {
   "name": "xdosdev",
   "compatibility_date": "2026-02-03",
+  "workers_dev": true,
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page"
-  }
+  },
+  "routes": [
+    { "pattern": "xdosdev.com", "custom_domain": true },
+    { "pattern": "www.xdosdev.com", "custom_domain": true }
+  ]
 }
