@@ -10,6 +10,8 @@ export const SITE = {
     whatsappHref: 'https://wa.me/2347033994933',
     address: '5900 Balcones Drive STE 100, Austin, TX 78731',
     formspree: 'https://formspree.io/f/xzzaypvb',
+    // Cloudflare Web Analytics site token (dash → Analytics & Logs → Web Analytics). Leave empty to disable.
+    analyticsToken: '',
     year: new Date().getFullYear(),
 };
 
@@ -64,12 +66,10 @@ function head({ title, description, path, image = '/img/og-image.jpg', jsonLd })
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#0b1020">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/styles.css">
     <script>document.documentElement.classList.remove('no-js')</script>
-${jsonLd ? `    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` : ''}</head>`;
+${jsonLd ? `    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>\n` : ''}${SITE.analyticsToken ? `    <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${SITE.analyticsToken}"}'></script>\n` : ''}</head>`;
 }
 
 function nav({ dark = false, current = '' }) {
@@ -123,7 +123,7 @@ function footer() {
         </div>
         <div class="footer-bottom">
             <p>&copy; 2019–${SITE.year} XdosDev. Xdosdev LLC (Texas, USA) · Xdosdev Digital (Nigeria).</p>
-            <p><a href="mailto:${SITE.email}" style="color:inherit">${SITE.email}</a></p>
+            <p><a href="/privacy/" style="color:inherit">Privacy</a> · <a href="mailto:${SITE.email}" style="color:inherit">${SITE.email}</a></p>
         </div>
     </div>
 </footer>
@@ -205,7 +205,7 @@ function enquiryForm({ product = '', kind = 'demo', button = 'Send message', com
     </select></div>`}
     ${kind === 'waitlist' ? '' : `<div class="form-group"><label for="f-msg-${kind}">${product ? 'What would you like to see?' : 'Tell us about your project'}</label><textarea id="f-msg-${kind}" name="message" rows="${compact ? 3 : 5}" ${product ? '' : 'required'}></textarea></div>`}
     <button type="submit" class="btn btn-primary btn-block">${esc(button)}</button>
-    <p class="form-note">We reply within one business day. No spam, ever.</p>
+    <p class="form-note">We reply within one business day. See how we handle your details in our <a href="/privacy/">privacy notice</a>.</p>
 </form>`;
 }
 
@@ -499,5 +499,47 @@ export function notFoundPage() {
         description: 'The page you were looking for could not be found.',
         path: '/404',
         body: `<section class="page-hero" style="min-height:70vh;display:grid;place-items:center"><div class="container-narrow"><span class="eyebrow">404</span><h1 class="h1">This page doesn't exist</h1><p class="lead">It may have moved when we rebuilt the site.</p><div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="/">Go home</a><a class="btn btn-ghost" href="/solutions/">Browse solutions</a></div></div></section>`,
+    });
+}
+
+export function privacyPage() {
+    const updated = '13 September 2026';
+    const section = (title, html) => `<h2 class="h3" style="margin:40px 0 12px">${title}</h2>${html}`;
+    const body = `
+<section class="page-hero" style="text-align:left;padding-bottom:24px">
+    <div class="container-narrow">
+        <span class="eyebrow">Legal</span>
+        <h1 class="h1" style="font-size:clamp(2rem,4vw,3rem)">Privacy notice</h1>
+        <p class="lead" style="margin-left:0">How XdosDev handles personal information collected through xdosdev.com. Last updated ${updated}.</p>
+    </div>
+</section>
+<section class="section prose" style="padding-top:16px">
+    <div class="container-narrow">
+        ${section('Who we are', `<p>This website is operated by Xdosdev LLC (Texas, USA) and Xdosdev Digital (registered with the Corporate Affairs Commission, Nigeria), together "XdosDev", "we" or "us". For any privacy question, email <a href="mailto:${SITE.email}">${SITE.email}</a>.</p>
+        <p>This notice covers this marketing website only. Each of our products — such as JADICOQ ERP, StudyMate Schools, Studymate UMS and LearnBee — has its own privacy notice on its own website, which applies when you use that product.</p>`)}
+        ${section('What we collect', `<ul>
+            <li><strong>Enquiry, demo and waitlist forms:</strong> your name, email address and, if you choose to give them, your organisation, phone/WhatsApp number and message, plus the product you asked about.</li>
+            <li><strong>Chat widget:</strong> your name, email address, message and the page you sent it from.</li>
+            <li><strong>Technical data:</strong> like any website, our hosting provider processes your IP address and browser details to deliver pages and protect the site from abuse.</li>
+        </ul>
+        <p>We do not use advertising or tracking cookies, and we do not sell your information.</p>`)}
+        ${section('Why we use it', `<p>We use what you send us only to reply to your enquiry, arrange a demo, notify you when a product you joined the waitlist for launches, and keep a record of our conversation. Our lawful basis is your consent when you submit a form, and our legitimate interest in responding to business enquiries.</p>`)}
+        ${section('Who processes it for us', `<ul>
+            <li><strong>Formspree</strong> receives form and chat submissions and forwards them to our inbox.</li>
+            <li><strong>Google (Gmail)</strong> hosts the inbox where we receive and answer enquiries.</li>
+            <li><strong>Cloudflare</strong> hosts and secures this website${SITE.analyticsToken ? ' and provides privacy-friendly, cookie-free visitor statistics' : ''}.</li>
+        </ul>
+        <p>These providers may process data in the United States and other countries. Where information leaves the UK, EEA or Nigeria, we rely on the providers' standard contractual safeguards.</p>`)}
+        ${section('How long we keep it', `<p>We keep enquiry records for up to 24 months after our last contact with you, unless you become a customer (in which case the relevant product agreement applies) or ask us to delete them sooner. Waitlist entries are deleted once the product launches and we have notified you, or when you unsubscribe.</p>`)}
+        ${section('Your rights', `<p>Depending on where you live — including under the UK GDPR, the EU GDPR and the Nigeria Data Protection Act 2023 — you can ask us to access, correct or delete your information, object to or restrict how we use it, or withdraw your consent at any time. Email <a href="mailto:${SITE.email}">${SITE.email}</a> and we will respond within one month.</p>
+        <p>If you are unhappy with how we have handled your information, you can complain to your local regulator — for example the Information Commissioner's Office (UK) or the Nigeria Data Protection Commission.</p>`)}
+        ${section('Changes', `<p>We will update this page if our practices change, and revise the date at the top.</p>`)}
+    </div>
+</section>`;
+    return page({
+        title: 'Privacy notice — XdosDev',
+        description: 'How XdosDev collects, uses and protects personal information submitted through xdosdev.com.',
+        path: '/privacy/',
+        body,
     });
 }

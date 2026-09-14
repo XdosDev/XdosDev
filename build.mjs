@@ -2,11 +2,11 @@
 // Usage: node build.mjs
 // Only files this script owns are written; other public/ content (e.g. public/marketing) is left alone.
 
-import { mkdir, writeFile, copyFile, readdir, rm } from 'node:fs/promises';
+import { mkdir, writeFile, readFile, copyFile, readdir, rm } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { solutions } from './src/solutions.mjs';
-import { SITE, homePage, solutionsIndexPage, solutionPage, notFoundPage } from './src/templates.mjs';
+import { SITE, homePage, solutionsIndexPage, solutionPage, notFoundPage, privacyPage } from './src/templates.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const out = join(root, 'public');
@@ -26,11 +26,14 @@ console.log('Building site → public/');
 await emit('index.html', homePage());
 await emit('solutions/index.html', solutionsIndexPage());
 for (const s of solutions) await emit(`solutions/${s.slug}/index.html`, solutionPage(s));
+await emit('privacy/index.html', privacyPage());
 await emit('404.html', notFoundPage());
 
 // Assets
 await emit('favicon.svg', favicon);
-await copyFile(join(root, 'src/assets/styles.css'), join(out, 'styles.css'));
+await emit('styles.css', (await readFile(join(root, 'src/assets/fonts.css'), 'utf8')) + '\n' + (await readFile(join(root, 'src/assets/styles.css'), 'utf8')));
+await mkdir(join(out, 'fonts'), { recursive: true });
+for (const f of await readdir(join(root, 'src/assets/fonts'))) await copyFile(join(root, 'src/assets/fonts', f), join(out, 'fonts', f));
 await copyFile(join(root, 'src/assets/script.js'), join(out, 'script.js'));
 
 // Images: replace public/img with the optimised set
@@ -39,7 +42,7 @@ await mkdir(join(out, 'img'), { recursive: true });
 for (const f of await readdir(join(root, 'img/opt'))) await copyFile(join(root, 'img/opt', f), join(out, 'img', f));
 
 // SEO
-const urls = ['/', '/solutions/', ...solutions.map(s => `/solutions/${s.slug}/`)];
+const urls = ['/', '/solutions/', ...solutions.map(s => `/solutions/${s.slug}/`), '/privacy/'];
 await emit('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
 await emit('robots.txt', `User-agent: *\nAllow: /\nDisallow: /marketing/\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
 

@@ -432,6 +432,12 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .page-hero { padding: calc(var(--nav-h) + 80px) 0 56px; text-align: center; background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(59, 91, 253, 0.1), transparent 70%); }
 .page-hero .lead { margin: 18px auto 0; max-width: 640px; }
 
+.prose p, .prose li { color: var(--text-2); }
+.prose p + p { margin-top: 12px; }
+.prose ul { padding-left: 20px; display: grid; gap: 8px; }
+.prose ul + p { margin-top: 14px; }
+.prose a, .form-note a { color: var(--brand); }
+
 /* ---------- Footer ---------- */
 .footer { background: var(--ink); color: rgba(255, 255, 255, 0.65); padding: 72px 0 32px; }
 .footer-grid { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 40px; }
