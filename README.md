@@ -93,8 +93,8 @@ XdosDev/
 ## 📧 Contact Information
 
 - **Website**: [xdosdev.com](https://xdosdev.com)
-- **Email**: [info@xdosdev.com](mailto:info@xdosdev.com)
-- **Phone**: +1 (504) 517-2125
+- **Email**: [admin@xdosdev.com](mailto:admin@xdosdev.com)
+- **Phone**: +1 (346) 800-2550
 - **Location**: Houston, TX
 - **Timezone**: CST (UTC-6)
 
@@ -181,8 +181,8 @@ While this is a portfolio website, suggestions and improvements are welcome:
 Ready to bring your digital vision to life? 
 
 **Contact XdosDev today:**
-- 📧 **Email**: [info@xdosdev.com](mailto:info@xdosdev.com)
-- 📱 **Call**: [+1 (504) 517-2125](tel:+15045172125)
+- 📧 **Email**: [admin@xdosdev.com](mailto:admin@xdosdev.com)
+- 📱 **Call**: [+1 (346)800-2550](tel:+13468002550)
 - 🌐 **Website**: [xdosdev.com](https://xdosdev.com)
 
 ---
