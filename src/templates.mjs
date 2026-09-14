@@ -11,7 +11,7 @@ export const SITE = {
     address: '5900 Balcones Drive STE 100, Austin, TX 78731',
     formspree: 'https://formspree.io/f/xzzaypvb',
     // Cloudflare Web Analytics site token (dash → Analytics & Logs → Web Analytics). Leave empty to disable.
-    analyticsToken: '',
+    analyticsToken: 'aa4e742c8e964b4c950da55eb6491230',
     year: new Date().getFullYear(),
 };
 
