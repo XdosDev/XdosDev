@@ -11,7 +11,7 @@ src/
   assets/           styles.css, script.js
 img/opt/            Optimised WebP images used by the site
 build.mjs           Renders everything into public/
-public/             Build output deployed by wrangler (public/marketing is separate and untouched)
+public/             Build output deployed by wrangler — everything in it is public
 ```
 
 Pages generated: `/`, `/solutions/`, one page per product in `src/solutions.mjs`, `/404.html`, `sitemap.xml`, `robots.txt`.
@@ -29,3 +29,5 @@ cd .. && wrangler deploy                         # Cloudflare Workers static ass
 ```
 
 No dependencies — Node 18+ is enough.
+
+The internal Marketing Engine (`marketing/`) is not part of this site. Run it with `node marketing/server.js`, which checks the password on the server; never copy it into `public/`.

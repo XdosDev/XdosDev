@@ -408,6 +408,13 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 .plan .btn { margin-top: auto; }
 .plans-note { text-align: center; font-size: 0.85rem; color: var(--text-3); margin-top: 20px; }
 
+.customer { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; padding: 32px; border-radius: var(--r-xl); background: var(--bg-soft); border: 1px solid var(--line); }
+.customer-shot { display: block; text-decoration: none; transition: transform 0.25s var(--ease); }
+.customer-shot:hover { transform: translateY(-3px); }
+.customer-body h3 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; margin-top: 14px; }
+.customer-loc { font-size: 0.9rem; color: var(--text-3); margin-top: 4px; }
+.customer-text { font-size: 1.05rem; color: var(--text-2); margin: 16px 0 18px; }
+.customer-body .btn { margin-top: 22px; }
 .faq { display: grid; gap: 12px; }
 .faq details { border: 1px solid var(--line); border-radius: var(--r-md); background: #fff; }
 .faq summary { cursor: pointer; list-style: none; padding: 18px 22px; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
@@ -509,7 +516,8 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
-    .hero-inner, .sol-hero-grid, .split, .about-grid, .contact-grid, .cta-band { grid-template-columns: 1fr; gap: 40px; }
+    .hero-inner, .sol-hero-grid, .split, .about-grid, .contact-grid, .cta-band, .customer { grid-template-columns: 1fr; gap: 40px; }
+    .customer { padding: 20px; gap: 28px; }
     .process { grid-template-columns: 1fr 1fr; }
     .services-grid { grid-template-columns: 1fr 1fr; }
     .solutions-grid--single .solution-card { grid-template-columns: 1fr; }

@@ -1,6 +1,6 @@
 // Static site build: renders src/ templates into public/ (the directory wrangler deploys).
 // Usage: node build.mjs
-// Only files this script owns are written; other public/ content (e.g. public/marketing) is left alone.
+// Only files this script owns are written; anything else placed in public/ is deployed too, so keep it clean.
 
 import { mkdir, writeFile, readFile, copyFile, readdir, rm } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -44,6 +44,6 @@ for (const f of await readdir(join(root, 'img/opt'))) await copyFile(join(root, 
 // SEO
 const urls = ['/', '/solutions/', ...solutions.map(s => `/solutions/${s.slug}/`), '/privacy/'];
 await emit('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${SITE.url}${u}</loc></url>`).join('\n')}\n</urlset>\n`);
-await emit('robots.txt', `User-agent: *\nAllow: /\nDisallow: /marketing/\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
+await emit('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
 
 console.log('Done.');

@@ -49,6 +49,16 @@ export const solutions = [
             { title: 'Open when you need it', text: 'API keys, webhooks, bulk import/export, custom fields and document templates.' },
             { title: 'Designed around recognised standards', text: 'Features designed to support ISO 9001, ISO 55001, IFRS reporting and more — with the evidence trail auditors ask for.' },
         ],
+        // Public customer reference — mirrors the wording on jadicoq.com's own Customers section.
+        customer: {
+            name: 'Medtech Consults & Diagnostics Services Limited',
+            sector: 'Healthcare & diagnostics',
+            location: 'Elele, Rivers State',
+            text: 'Runs patient records, laboratory diagnostics, pharmacy and billing on JADICOQ Hospital Management, with a public patient portal on their own domain.',
+            modules: ['Hospital Management', 'Laboratory', 'Pharmacy', 'Billing'],
+            url: 'https://medtechconsults.com/',
+            image: { src: '/img/medtechconsults.webp', alt: 'Medtech Consults patient portal, powered by JADICOQ' },
+        },
         faq: [
             { q: 'Is there really a free plan?', a: 'Yes. The free plan gives you one app of your choice for one user with unlimited hosting. Paid plans unlock every module and unlimited users.' },
             { q: 'Can you migrate our existing data?', a: 'Yes. Our team handles setup, data migration from spreadsheets or your old system, staff training and ongoing support.' },

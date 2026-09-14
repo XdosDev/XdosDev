@@ -403,6 +403,26 @@ function ctaBand({ color, title, text, form }) {
 </section>`;
 }
 
+function customerStory(s) {
+    const c = s.customer;
+    return `<section class="section" style="--accent:${s.color}">
+    <div class="container">
+        <div class="section-header"><span class="eyebrow">In production</span><h2 class="h2">Who runs on ${esc(s.name)}</h2></div>
+        <div class="customer reveal">
+            <a class="customer-shot" href="${c.url}" target="_blank" rel="noopener"><div class="browser"><div class="browser-bar"><i></i><i></i><i></i><span>${esc(c.url.replace(/^https?:\/\/|\/$/g, ''))}</span></div><img src="${c.image.src}" alt="${esc(c.image.alt)}" loading="lazy" width="1440" height="900"></div></a>
+            <div class="customer-body">
+                <span class="badge">${esc(c.sector)}</span>
+                <h3>${esc(c.name)}</h3>
+                <p class="customer-loc">${esc(c.location)}</p>
+                <p class="customer-text">${esc(c.text)}</p>
+                <div class="service-tags">${c.modules.map(m => `<span class="tag">${esc(m)}</span>`).join('')}</div>
+                <a class="btn btn-ghost btn-sm" href="${c.url}" target="_blank" rel="noopener">Visit ${esc(c.url.replace(/^https?:\/\/|\/$/g, ''))} <span class="arrow">↗</span></a>
+            </div>
+        </div>
+    </div>
+</section>`;
+}
+
 // ---------- Solution detail ----------
 export function solutionPage(s) {
     const cta = s.cta;
@@ -459,6 +479,7 @@ export function solutionPage(s) {
     </div>
 </section>
 
+${s.customer ? customerStory(s) : ''}
 <section class="section section-soft">
     <div class="container-narrow">
         <div class="section-header"><span class="eyebrow" style="color:${s.color}">FAQ</span><h2 class="h2">Common questions</h2></div>
