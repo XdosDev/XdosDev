@@ -1,0 +1,41 @@
+# Added by XdosComply: daily Trivy dependency scan. The JSON report is uploaded as the
+# "trivy-results" artifact, which XdosComply's trivy collector reads as vulnerability evidence.
+# Actions are pinned to commit SHAs and the Trivy image to a digest to prevent supply-chain tampering.
+name: Trivy vulnerability scan
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trivy:
+    name: Scan dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run Trivy (aquasec/trivy 0.74.0)
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/src:ro" \
+            -v "$RUNNER_TEMP:/out" \
+            aquasec/trivy@sha256:62b1e65e8869bc4b4c6aa4fa2b21595256c7c2f6018a9d9ad61caf87187c1969 \
+            fs --scanners vuln --format json --output /out/trivy-results.json --exit-code 0 /src
+
+      - name: Upload report
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: trivy-results
+          path: ${{ runner.temp }}/trivy-results.json
+          retention-days: 30
+          if-no-files-found: error
