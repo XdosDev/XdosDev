@@ -6,9 +6,12 @@ export const SITE = {
     email: 'info@xdosdev.com',
     phoneUs: '+1 (346) 800-2550',
     phoneUsHref: 'tel:+13468002550',
+    phoneNg: '+234 704 923 8237',
+    phoneNgHref: 'tel:+2347049238237',
     whatsapp: '+234 703 399 4933',
     whatsappHref: 'https://wa.me/2347033994933',
     address: '5900 Balcones Drive STE 100, Austin, TX 78731',
+    addressNg: '8 Webilor Close, Rukpokwu, Elipkokwu-odu, Obio-Akpor, Rivers State, Nigeria',
     formspree: 'https://formspree.io/f/xzzaypvb',
     // Cloudflare Web Analytics site token (dash → Analytics & Logs → Web Analytics). Leave empty to disable.
     analyticsToken: 'aa4e742c8e964b4c950da55eb6491230',
@@ -233,6 +236,8 @@ export function homePage() {
 
     const work = [
         ['Medtech Consults & Diagnostics', 'Patient portal and hospital system running on JADICOQ', 'https://medtechconsults.com/', '/img/medtechconsults.webp'],
+        ['Mudio Planning Associate', 'Corporate site for a diversified minerals, oil & gas and contracting group', 'https://mudiopla.com', '/img/mudiopla.webp'],
+        ['Victory Pentecostal Ministries', 'Church website with services, sermons, events and giving', 'https://vpminternational.org/', '/img/vpminternational.webp'],
         ['InuezTech', 'IT services company website', 'https://www.inueztech.com', '/img/inueztech.webp'],
         ['Farryn Cortes Photography', 'Photography portfolio', 'https://rapidmax01.github.io/farryncortesphotography/', '/img/farryncortes.webp'],
     ];
@@ -327,7 +332,7 @@ export function homePage() {
         </div>
         <div class="locations">
             <div class="location reveal"><div class="location-flag" aria-hidden="true">🇺🇸</div><div><h3>Xdosdev LLC — United States</h3><p>Registered in Texas<br>5900 Balcones Drive STE 100, Austin, TX 78731<br><a href="${SITE.phoneUsHref}">${SITE.phoneUs}</a></p></div></div>
-            <div class="location reveal"><div class="location-flag" aria-hidden="true">🇳🇬</div><div><h3>Xdosdev Digital — Nigeria</h3><p>Registered with CAC · Lagos<br><a href="${SITE.whatsappHref}" target="_blank" rel="noopener">${SITE.whatsapp} (WhatsApp)</a></p></div></div>
+            <div class="location reveal"><div class="location-flag" aria-hidden="true">🇳🇬</div><div><h3>Xdosdev Digital — Nigeria</h3><p>Registered with CAC<br>${SITE.addressNg}<br><a href="${SITE.phoneNgHref}">${SITE.phoneNg}</a> · <a href="${SITE.whatsappHref}" target="_blank" rel="noopener">${SITE.whatsapp} (WhatsApp)</a></p></div></div>
         </div>
     </div>
 </section>
@@ -341,6 +346,7 @@ export function homePage() {
             <div class="contact-methods">
                 <div class="contact-method"><h4>Email</h4><a href="mailto:${SITE.email}">${SITE.email}</a></div>
                 <div class="contact-method"><h4>Phone (US)</h4><a href="${SITE.phoneUsHref}">${SITE.phoneUs}</a></div>
+                <div class="contact-method"><h4>Phone (Nigeria)</h4><a href="${SITE.phoneNgHref}">${SITE.phoneNg}</a></div>
                 <div class="contact-method"><h4>WhatsApp (Nigeria)</h4><a href="${SITE.whatsappHref}" target="_blank" rel="noopener">${SITE.whatsapp}</a></div>
             </div>
         </div>
@@ -350,7 +356,7 @@ export function homePage() {
 
     return page({
         title: 'XdosDev — ERP, School & University Management Software and Custom Development',
-        description: 'XdosDev builds and runs JADICOQ ERP, StudyMate Schools, Studymate UMS and LearnBee, and engineers custom web, mobile and AI software. Offices in Austin, TX and Lagos.',
+        description: 'XdosDev builds and runs JADICOQ ERP, StudyMate Schools, Studymate UMS and LearnBee, and engineers custom web, mobile and AI software. Offices in Austin, TX and Rivers State, Nigeria.',
         path: '/',
         dark: true,
         body,
@@ -361,7 +367,10 @@ export function homePage() {
             url: SITE.url,
             email: SITE.email,
             telephone: '+1-346-800-2550',
-            address: { '@type': 'PostalAddress', streetAddress: '5900 Balcones Drive STE 100', addressLocality: 'Austin', addressRegion: 'TX', postalCode: '78731', addressCountry: 'US' },
+            address: [
+                { '@type': 'PostalAddress', streetAddress: '5900 Balcones Drive STE 100', addressLocality: 'Austin', addressRegion: 'TX', postalCode: '78731', addressCountry: 'US' },
+                { '@type': 'PostalAddress', streetAddress: '8 Webilor Close, Rukpokwu, Elipkokwu-odu', addressLocality: 'Obio-Akpor', addressRegion: 'Rivers State', addressCountry: 'NG' },
+            ],
             sameAs: ['https://github.com/rapidmax01', 'https://linkedin.com/company/xdosdev', 'https://x.com/xdosdev'],
         },
     });
