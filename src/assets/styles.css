@@ -181,15 +181,19 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
     position: relative; overflow: hidden; background: var(--ink); color: #fff;
     padding: calc(var(--nav-h) + 96px) 0 96px;
 }
-/* Photographic backdrop, darkened so white text keeps its contrast */
+/* Photographic backdrop: the navy is multiplied into the photo (not laid over it),
+   so the brand colour stays and the image reads as texture. Glows sit on top. */
 .hero::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    background:
-        linear-gradient(105deg, rgba(11, 16, 32, 0.94) 0%, rgba(11, 16, 32, 0.82) 38%, rgba(11, 16, 32, 0.68) 70%, rgba(11, 16, 32, 0.78) 100%),
-        linear-gradient(180deg, rgba(11, 16, 32, 0.35) 0%, transparent 35%, rgba(11, 16, 32, 0.55) 100%),
-        radial-gradient(ellipse 55% 60% at 8% 0%, rgba(59, 91, 253, 0.32), transparent 70%),
-        radial-gradient(ellipse 45% 55% at 95% 15%, rgba(124, 58, 237, 0.22), transparent 70%),
-        url('/img/hero-bg.webp') center / cover no-repeat;
+    background-image:
+        radial-gradient(ellipse 55% 65% at 6% 0%, rgba(59, 91, 253, 0.45), transparent 68%),
+        radial-gradient(ellipse 45% 55% at 96% 12%, rgba(124, 58, 237, 0.38), transparent 70%),
+        linear-gradient(115deg, rgba(11, 16, 32, 0.97) 0%, rgba(13, 20, 46, 0.9) 42%, rgba(17, 26, 62, 0.78) 72%, rgba(11, 16, 32, 0.92) 100%),
+        url('/img/hero-bg.webp');
+    background-size: cover, cover, cover, cover;
+    background-position: center, center, center, center;
+    background-repeat: no-repeat;
+    background-blend-mode: screen, screen, multiply, normal;
 }
 /* Faint grid, faded toward the edges */
 .hero::after {
