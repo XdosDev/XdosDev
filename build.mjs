@@ -36,6 +36,11 @@ await mkdir(join(out, 'fonts'), { recursive: true });
 for (const f of await readdir(join(root, 'src/assets/fonts'))) await copyFile(join(root, 'src/assets/fonts', f), join(out, 'fonts', f));
 await copyFile(join(root, 'src/assets/script.js'), join(out, 'script.js'));
 
+// Homepage media and interaction assets.
+for (const f of ['homepage.css', 'homepage.js']) await copyFile(join(root, 'src/assets', f), join(out, f));
+await mkdir(join(out, 'assets/home'), { recursive: true });
+for (const f of await readdir(join(root, 'src/assets/home'))) await copyFile(join(root, 'src/assets/home', f), join(out, 'assets/home', f));
+
 // Images: replace public/img with the optimised set
 await rm(join(out, 'img'), { recursive: true, force: true });
 await mkdir(join(out, 'img'), { recursive: true });
