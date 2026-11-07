@@ -54,6 +54,7 @@ node --check src/assets/homepage.js
 # Optional browser regression suite (Playwright must be available):
 # Serve public/ on 127.0.0.1:8787, then:
 CHROMIUM_PATH=/usr/bin/chromium node tests/homepage.cjs
+CHROMIUM_PATH=/usr/bin/chromium node tests/film-controls.cjs
 ```
 
 The browser suite intercepts Formspree requests; it never sends a real enquiry.
