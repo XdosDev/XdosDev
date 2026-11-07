@@ -1,0 +1,9 @@
+# Never use live credentials for the mocked regression tests.
+# Keep the real .dev.vars file private and outside public/.
+CONTACT_EMAIL_ENABLED=false
+BREVO_SENDER_EMAIL=noreply@xdosdev.com
+BREVO_API_KEY=
+TURNSTILE_SITE_KEY=
+TURNSTILE_SECRET_KEY=
+CONTACT_DAILY_LIMIT=100
+CONTACT_HOURLY_LIMIT=20

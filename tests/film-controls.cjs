@@ -2,6 +2,7 @@
 // This suite never sends a contact or chat message.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
+const BASE_URL = process.env.TEST_BASE_URL || 'http://127.0.0.1:8787';
 
 (async () => {
   const browser = await chromium.launch({
@@ -12,11 +13,11 @@ const assert = require('node:assert/strict');
   try {
     for (const [width, height] of [[320,568],[360,640],[390,844],[400,582],[600,582],[601,582],[650,582],[651,582],[768,582],[1024,768],[1440,900]]) {
       const context = await browser.newContext({ viewport: { width, height }, reducedMotion: 'reduce' });
-      await context.route('**/*', route => route.request().url().startsWith('http://127.0.0.1:8787/') ? route.continue() : route.abort());
+      await context.route('**/*', route => route.request().url().startsWith(`${BASE_URL}/`) ? route.continue() : route.abort());
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
-      await page.goto('http://127.0.0.1:8787/');
+      await page.goto(`${BASE_URL}/`);
       for (const scrollY of [0, 40, 100]) {
         await page.evaluate(y => scrollTo(0, y), scrollY);
         const geometry = await page.evaluate(() => {

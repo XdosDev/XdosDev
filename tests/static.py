@@ -27,6 +27,15 @@ home=(root/'index.html').read_text()
 for forbidden in ['PRIVATE DESIGN CONCEPT','Editorial placeholder','Case study content to add','Nothing is submitted','live website is unchanged']:
  assert forbidden not in home,forbidden
 assert home.count('<h1')==1
-assert 'https://formspree.io/f/xzzaypvb' in home and '/privacy/' in home
+assert 'action="/api/contact"' in home and '/privacy/' in home
 assert 'application/ld+json' in home and 'static.cloudflareinsights.com' in home
 print(f'PASS {count} pages: local links, assets, fragments, unique IDs; homepage metadata and production copy')
+
+assert 'Historical records may remain' in (root/'privacy/index.html').read_text()
+assert 'Turnstile' in (root/'privacy/index.html').read_text()
+assert 'Brevo' in (root/'privacy/index.html').read_text()
+for f in root.rglob('*'):
+ if f.is_file() and f.suffix in ['.html','.js','.json']:
+  assert 'BREVO_API_KEY' not in f.read_text(), f'Server-only configuration exposed in {f}'
+
+assert 'Zoho Mail' in (root/'privacy/index.html').read_text()

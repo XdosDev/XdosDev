@@ -18,17 +18,18 @@ Pages generated: `/`, `/solutions/`, one page per product in `src/solutions.mjs`
 
 ## Adding or editing a solution
 
-Edit the entry in `src/solutions.mjs` (`status: 'live' | 'soon'`). A primary CTA `href` beginning with `#` scrolls to the page's enquiry form; forms submit to Formspree with the product name attached.
+Edit the entry in `src/solutions.mjs` (`status: 'live' | 'soon'`). A primary CTA `href` beginning with `#` scrolls to the page's enquiry form; forms submit to `/api/contact` with the product name attached. The Worker sends enquiry notifications through Brevo.
 
 ## Build & deploy
 
 ```bash
 node build.mjs                                   # writes public/
 cd public && python3 -m http.server 8787         # preview at http://localhost:8787
-cd .. && wrangler deploy                         # Cloudflare Workers static assets (wrangler.jsonc)
+# Release is upload-only staging, followed by explicit promotion.
+# Follow docs/brevo-setup.md; never use ordinary deploy/secret-put to stage.
 ```
 
-No dependencies — Node 18+ is enough.
+The static build and Worker tests have no npm dependencies. Use Node 22+ for the test suite and a current Wrangler version for Worker development.
 
 The internal Marketing Engine (`marketing/`) is not part of this site. Run it with `node marketing/server.js`, which checks the password on the server; never copy it into `public/`.
 
@@ -42,8 +43,7 @@ the existing solution detail pages. The idea builder only prepares an email draf
 
 The silent hero film and poster are self-hosted in `src/assets/home/`. The film is
 lazy-loaded when visible; reduced-motion and data-saving users see the poster
-until they choose Play. No Three.js runtime is needed. Contact submissions still
-use the existing Formspree integration.
+until they choose Play. No Three.js runtime is needed. Contact, demo, waitlist and chat notifications use the server-side Brevo integration. See [Brevo setup and release checklist](docs/brevo-setup.md) before deploying: sending is deliberately disabled until the sender and secret are configured.
 
 Validation:
 
@@ -51,19 +51,26 @@ Validation:
 node build.mjs
 python3 tests/static.py
 node --check src/assets/homepage.js
+node --check worker/contact.mjs
+node --test tests/contact.mjs tests/contact-config.mjs tests/contact-client.mjs
+python3 tests/budget.py
 # Optional browser regression suite (Playwright must be available):
 # Serve public/ on 127.0.0.1:8787, then:
+CHROMIUM_PATH=/usr/bin/chromium node tests/contact-browser.cjs
 CHROMIUM_PATH=/usr/bin/chromium node tests/homepage.cjs
 CHROMIUM_PATH=/usr/bin/chromium node tests/film-controls.cjs
 ```
 
-The browser suite intercepts Formspree requests; it never sends a real enquiry.
-Review at desktop and mobile widths, including reduced motion and JavaScript
-disabled, before release.
+The browser suite mocks Turnstile and intercepts `/api/contact` requests; it never sends a real enquiry.
+Review at desktop and mobile widths, including reduced motion and the direct-email
+fallback when JavaScript is disabled, before release. Turnstile requires JavaScript.
+Preparation and enabled-release checks are separate: use
+`node scripts/check-contact-config.mjs --prepare` while disabled and `--release`
+after the reviewed configuration is complete. Neither check verifies live credentials.
 
 Release note: `main`, not the repository's default `master`, contains the current
-multi-page production source. The baseline for this change is `d65270a`; its
-built homepage was verified byte-for-byte against xdosdev.com. Deploy only the
-reviewed `public/` build after explicit production approval. No deployment is
+multi-page production source. The Brevo integration baseline is `8d9c6c7`; the
+existing interactive homepage and mobile film-control fix are retained. Deploy only the
+reviewed Worker and `public/` build together after explicit production approval. No deployment is
 performed by this feature branch. Existing `wrangler.jsonc` targets the live
 custom domains, so do not run `wrangler deploy` just to preview this change.

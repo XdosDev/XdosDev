@@ -4,10 +4,51 @@
   "workers_dev": true,
   "assets": {
     "directory": "./public",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*"
+    ]
   },
   "routes": [
-    { "pattern": "xdosdev.com", "custom_domain": true },
-    { "pattern": "www.xdosdev.com", "custom_domain": true }
-  ]
+    {
+      "pattern": "xdosdev.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.xdosdev.com",
+      "custom_domain": true
+    }
+  ],
+  "main": "worker/contact.mjs",
+  "vars": {
+    "CONTACT_EMAIL_ENABLED": "false",
+    "BREVO_SENDER_EMAIL": "noreply@xdosdev.com",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAF39C6wqWuPC49fr",
+    "CONTACT_DAILY_LIMIT": "100",
+    "CONTACT_HOURLY_LIMIT": "20"
+  },
+  "ratelimits": [
+    {
+      "name": "CONTACT_RATE_LIMITER",
+      "namespace_id": "107202601",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "CONTACT_BUDGET_DB",
+      "database_name": "xdosdev-contact-budget",
+      "database_id": "2155d463-841f-401d-b28b-d805151719fb"
+    }
+  ],
+  "secrets": {
+    "required": [
+      "BREVO_API_KEY",
+      "TURNSTILE_SECRET_KEY"
+    ]
+  }
 }

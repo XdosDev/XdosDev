@@ -14,7 +14,7 @@ export const SITE = {
     whatsappHref: 'https://wa.me/2347033994933',
     address: '5900 Balcones Drive STE 100, Austin, TX 78731',
     addressNg: '8 Webilor Close, Rukpokwu, Elipkokwu-odu, Obio-Akpor, Rivers State, Nigeria',
-    formspree: 'https://formspree.io/f/xzzaypvb',
+    contactEndpoint: '/api/contact',
     // Cloudflare Web Analytics site token (dash → Analytics & Logs → Web Analytics). Leave empty to disable.
     analyticsToken: 'aa4e742c8e964b4c950da55eb6491230',
     year: new Date().getFullYear(),
@@ -140,7 +140,7 @@ function footer() {
             <div><div class="chat-header-name">XdosDev</div><div class="chat-header-status"><span class="chat-status-dot"></span> We typically reply within a few hours</div></div>
         </div>
         <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
-        <form class="chat-form" id="chatForm" action="${SITE.formspree}" method="POST"><div class="chat-input-row"><input class="chat-input" id="chatInput" autocomplete="off" aria-label="Your reply"><button type="submit" class="chat-send" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div></form>
+        <form class="chat-form" id="chatForm" action="${SITE.contactEndpoint}" method="POST"><input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true"><div class="chat-input-row"><input class="chat-input" id="chatInput" maxlength="100" autocomplete="off" aria-label="Your reply"><button type="submit" class="chat-send" aria-label="Send"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button></div></form>
     </div>
     <button class="chat-bubble" type="button" aria-label="Open chat" aria-expanded="false">
         <svg class="chat-icon-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
@@ -191,24 +191,24 @@ function placeholderArt(s) {
 
 function enquiryForm({ product = '', kind = 'demo', button = 'Send message', compact = false }) {
     const subject = product ? `${kind === 'waitlist' ? 'Waitlist' : 'Enquiry'}: ${product}` : 'New enquiry from xdosdev.com';
-    return `<form class="js-form" action="${SITE.formspree}" method="POST">
+    return `<noscript><p class="form-nojs">This form needs JavaScript for spam protection. Please <a href="mailto:${SITE.email}">email ${SITE.email}</a> instead.</p></noscript><form class="js-form" action="${SITE.contactEndpoint}" method="POST">
     <input type="hidden" name="_subject" value="${esc(subject)}">
     ${product ? `<input type="hidden" name="product" value="${esc(product)}">` : ''}
     <input type="hidden" name="enquiry_type" value="${kind}">
     <input type="text" name="_gotcha" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
     <div class="form-row">
-        <div class="form-group"><label for="f-name-${kind}">Name</label><input id="f-name-${kind}" name="name" required autocomplete="name"></div>
-        <div class="form-group"><label for="f-email-${kind}">Email</label><input id="f-email-${kind}" type="email" name="email" required autocomplete="email"></div>
+        <div class="form-group"><label for="f-name-${kind}">Name</label><input id="f-name-${kind}" name="name" maxlength="100" required autocomplete="name"></div>
+        <div class="form-group"><label for="f-email-${kind}">Email</label><input id="f-email-${kind}" type="email" name="email" maxlength="254" required autocomplete="email"></div>
     </div>
     ${kind === 'waitlist' ? '' : `<div class="form-row">
-        <div class="form-group"><label for="f-org-${kind}">Organisation</label><input id="f-org-${kind}" name="organisation" autocomplete="organization"></div>
-        <div class="form-group"><label for="f-phone-${kind}">Phone / WhatsApp</label><input id="f-phone-${kind}" name="phone" autocomplete="tel"></div>
+        <div class="form-group"><label for="f-org-${kind}">Organisation</label><input id="f-org-${kind}" name="organisation" maxlength="200" autocomplete="organization"></div>
+        <div class="form-group"><label for="f-phone-${kind}">Phone / WhatsApp</label><input id="f-phone-${kind}" name="phone" maxlength="60" autocomplete="tel"></div>
     </div>`}
     ${product ? '' : `<div class="form-group"><label for="f-interest">I'm interested in</label><select id="f-interest" name="interest">
         ${solutions.map(s => `<option>${esc(s.name)}</option>`).join('')}
         <option selected>A custom project</option><option>Something else</option>
     </select></div>`}
-    ${kind === 'waitlist' ? '' : `<div class="form-group"><label for="f-msg-${kind}">${product ? 'What would you like to see?' : 'Tell us about your project'}</label><textarea id="f-msg-${kind}" name="message" rows="${compact ? 3 : 5}" ${product ? '' : 'required'}></textarea></div>`}
+    ${kind === 'waitlist' ? '' : `<div class="form-group"><label for="f-msg-${kind}">${product ? 'What would you like to see?' : 'Tell us about your project'}</label><textarea id="f-msg-${kind}" name="message" maxlength="5000" rows="${compact ? 3 : 5}" ${product ? '' : 'required'}></textarea></div>`}
     <button type="submit" class="btn btn-primary btn-block">${esc(button)}</button>
     <p class="form-note">We reply within one business day. See how we handle your details in our <a href="/privacy/">privacy notice</a>.</p>
 </form>`;
@@ -453,7 +453,7 @@ export function notFoundPage() {
 }
 
 export function privacyPage() {
-    const updated = '13 September 2026';
+    const updated = '7 November 2026';
     const section = (title, html) => `<h2 class="h3" style="margin:40px 0 12px">${title}</h2>${html}`;
     const body = `
 <section class="page-hero" style="text-align:left;padding-bottom:24px">
@@ -475,9 +475,10 @@ export function privacyPage() {
         <p>We do not use advertising or tracking cookies, and we do not sell your information.</p>`)}
         ${section('Why we use it', `<p>We use what you send us only to reply to your enquiry, arrange a demo, notify you when a product you joined the waitlist for launches, and keep a record of our conversation. Our lawful basis is your consent when you submit a form, and our legitimate interest in responding to business enquiries.</p>`)}
         ${section('Who processes it for us', `<ul>
-            <li><strong>Formspree</strong> receives form and chat submissions and forwards them to our inbox.</li>
-            <li><strong>Google (Gmail)</strong> hosts the inbox where we receive and answer enquiries.</li>
-            <li><strong>Cloudflare</strong> hosts and secures this website${SITE.analyticsToken ? ' and provides privacy-friendly, cookie-free visitor statistics' : ''}.</li>
+            <li><strong>Brevo</strong> processes new form and chat details to deliver enquiry notifications to our inbox. Submissions are not automatically added to a marketing list.</li>
+            <li><strong>Formspree</strong> previously handled form and chat submissions. Historical records may remain there until reviewed and deleted under our retention policy.</li>
+            <li><strong>Zoho Mail</strong> hosts the inbox where we receive enquiry notifications.</li>
+            <li><strong>Cloudflare</strong> hosts and secures this website, validates spam-protection checks with Turnstile, and stores aggregate send-limit counters without enquiry contents${SITE.analyticsToken ? ' and provides privacy-friendly, cookie-free visitor statistics' : ''}.</li>
         </ul>
         <p>These providers may process data in the United States and other countries. Where information leaves the UK, EEA or Nigeria, we rely on the providers' standard contractual safeguards.</p>`)}
         ${section('How long we keep it', `<p>We keep enquiry records for up to 24 months after our last contact with you, unless you become a customer (in which case the relevant product agreement applies) or ask us to delete them sooner. Waitlist entries are deleted once the product launches and we have notified you, or when you unsubscribe.</p>`)}

@@ -582,3 +582,7 @@ a:hover .arrow, button:hover .arrow { transform: translateX(3px); }
     .chat-widget { right: 16px; bottom: 16px; }
     .hero-product span { white-space: normal; }
 }
+
+/* No-JavaScript visitors retain a direct email path; Turnstile requires JavaScript. */
+.no-js .js-form, .no-js .chat-widget { display: none; }
+.form-verification { margin: 12px 0; }
