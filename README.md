@@ -31,3 +31,38 @@ cd .. && wrangler deploy                         # Cloudflare Workers static ass
 No dependencies — Node 18+ is enough.
 
 The internal Marketing Engine (`marketing/`) is not part of this site. Run it with `node marketing/server.js`, which checks the password on the server; never copy it into `public/`.
+
+## Interactive homepage
+
+The homepage layout is in `src/homepage.html`; its isolated styles and progressive
+interactions are in `src/assets/homepage.css` and `src/assets/homepage.js`.
+The shared navigation, forms, chat, metadata, privacy notice and product pages
+continue to use the existing templates and assets. Homepage product links lead to
+the existing solution detail pages. The idea builder only prepares an email draft.
+
+The silent hero film and poster are self-hosted in `src/assets/home/`. The film is
+lazy-loaded when visible; reduced-motion and data-saving users see the poster
+until they choose Play. No Three.js runtime is needed. Contact submissions still
+use the existing Formspree integration.
+
+Validation:
+
+```bash
+node build.mjs
+python3 tests/static.py
+node --check src/assets/homepage.js
+# Optional browser regression suite (Playwright must be available):
+# Serve public/ on 127.0.0.1:8787, then:
+CHROMIUM_PATH=/usr/bin/chromium node tests/homepage.cjs
+```
+
+The browser suite intercepts Formspree requests; it never sends a real enquiry.
+Review at desktop and mobile widths, including reduced motion and JavaScript
+disabled, before release.
+
+Release note: `main`, not the repository's default `master`, contains the current
+multi-page production source. The baseline for this change is `d65270a`; its
+built homepage was verified byte-for-byte against xdosdev.com. Deploy only the
+reviewed `public/` build after explicit production approval. No deployment is
+performed by this feature branch. Existing `wrangler.jsonc` targets the live
+custom domains, so do not run `wrangler deploy` just to preview this change.

@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+const homepage = readFileSync(new URL('./homepage.html', import.meta.url), 'utf8');
 import { categories, solutions } from './solutions.mjs';
 
 export const SITE = {
@@ -214,26 +216,6 @@ function enquiryForm({ product = '', kind = 'demo', button = 'Send message', com
 
 // ---------- Home ----------
 export function homePage() {
-    const live = solutions.filter(s => s.status === 'live');
-    const groups = categories
-        .map(c => {
-            const items = solutions.filter(s => s.category === c.id);
-            return `<div class="solution-group">
-        <div class="solution-group-head"><h3>${c.name}</h3><p>${c.blurb}</p></div>
-        <div class="solutions-grid${items.length === 1 ? ' solutions-grid--single' : ''}">${items.map(solutionCard).join('')}</div>
-    </div>`;
-        })
-        .join('');
-
-    const services = [
-        ['code', 'Web platforms', 'Customer portals, marketplaces and SaaS products built to be run, not just launched.', ['React', 'Next.js', 'Node.js', 'FastAPI']],
-        ['phone', 'Mobile apps', 'iOS and Android apps from a single codebase, with the backend and admin tools they need.', ['React Native', 'Expo', 'Flutter']],
-        ['ledger', 'Payments & fintech', 'Subscriptions, wallets, payouts and reconciliation across African and global rails.', ['Paystack', 'Stripe', 'Flutterwave']],
-        ['spark', 'AI features', 'Tutors, assistants, document extraction and summaries — grounded in your own data.', ['Claude', 'RAG', 'Automation']],
-        ['cloud', 'Cloud & DevOps', 'Deployment, monitoring, backups and security hardening for production systems.', ['Fly.io', 'Cloudflare', 'Docker', 'PostgreSQL']],
-        ['building', 'Tailored editions', 'Need JADICOQ or StudyMate adapted for your institution? We customise, migrate and train.', ['Customisation', 'Migration', 'Training']],
-    ];
-
     const work = [
         ['Medtech Consults & Diagnostics', 'Patient portal and hospital system running on JADICOQ', 'https://medtechconsults.com/', '/img/medtechconsults.webp'],
         ['Mudio Planning Associate', 'Corporate site for a diversified minerals, oil & gas and contracting group', 'https://mudiopla.com', '/img/mudiopla.webp'],
@@ -242,73 +224,11 @@ export function homePage() {
         ['Farryn Cortes Photography', 'Photography portfolio', 'https://rapidmax01.github.io/farryncortesphotography/', '/img/farryncortes.webp'],
     ];
 
-    const body = `
-<section class="hero">
-    <div class="container hero-inner">
-        <div>
-            <div class="hero-badge"><span class="pulse"></span> ${live.length} products live · US, UK &amp; Africa</div>
-            <h1 class="h1">Software that runs <span class="gradient-text">businesses, schools and universities.</span></h1>
-            <p class="lead">XdosDev builds and operates ready-to-use platforms — an ERP, school and university management systems, and AI learning tools — and engineers custom software when off-the-shelf won't do.</p>
-            <div class="hero-actions">
-                <a href="/solutions/" class="btn btn-light">Explore solutions <span class="arrow">→</span></a>
-                <a href="#contact" class="btn btn-outline-light">Start a custom project</a>
-            </div>
-        </div>
-        <div class="hero-stack" aria-label="Our products">
-            ${solutions.map(s => `<a class="hero-product" href="/solutions/${s.slug}/">${dot(s)}<div class="hero-product-text"><strong>${esc(s.name)}${s.status === 'soon' ? ' <small style="opacity:.6;font-weight:500">· soon</small>' : ''}</strong><span>${esc(s.kicker)} — ${esc(s.tagline)}</span></div><span class="arrow">→</span></a>`).join('')}
-        </div>
-    </div>
-</section>
+    const body = `<link rel="stylesheet" href="/homepage.css">
+${homepage}
+<script src="/homepage.js" defer></script>
 
-<div class="facts">
-    <div class="container facts-grid">
-        <div class="fact"><span class="fact-value">${solutions.length}</span><span class="fact-label">Products we own &amp; run</span></div>
-        <div class="fact"><span class="fact-value">3</span><span class="fact-label">Markets: US, UK, Africa</span></div>
-        <div class="fact"><span class="fact-value">2019</span><span class="fact-label">Building software since</span></div>
-        <div class="fact"><span class="fact-value">2</span><span class="fact-label">Registered entities: USA &amp; Nigeria</span></div>
-    </div>
-</div>
-
-<section id="solutions" class="section">
-    <div class="container">
-        <div class="section-header">
-            <span class="eyebrow">Solutions</span>
-            <h2 class="h2">Ready-made platforms you can start using today</h2>
-            <p class="lead">Each product is built, hosted and supported by our team. Sign up yourself, or let us set it up, migrate your data and train your staff.</p>
-        </div>
-        ${groups}
-    </div>
-</section>
-
-<section id="services" class="section section-dark">
-    <div class="container">
-        <div class="section-header">
-            <span class="eyebrow">Custom development</span>
-            <h2 class="h2">When you need something built for you</h2>
-            <p class="lead">The same team and infrastructure behind our products, applied to your idea.</p>
-        </div>
-        <div class="services-grid">
-            ${services.map(([ic, t, d, tags]) => `<div class="service reveal"><div class="service-icon">${icon(ic, 22)}</div><h3>${t}</h3><p>${d}</p><div class="service-tags">${tags.map(x => `<span class="tag">${x}</span>`).join('')}</div></div>`).join('')}
-        </div>
-    </div>
-</section>
-
-<section class="section section-soft">
-    <div class="container">
-        <div class="section-header">
-            <span class="eyebrow">How we work</span>
-            <h2 class="h2">From first call to live system</h2>
-        </div>
-        <div class="process">
-            <div class="process-step reveal"><h3>Discover</h3><p>We learn how you work today and decide together whether an existing product fits or a custom build is needed.</p></div>
-            <div class="process-step reveal"><h3>Configure or build</h3><p>We set up your platform, or design and build in short cycles you can see and test.</p></div>
-            <div class="process-step reveal"><h3>Migrate &amp; train</h3><p>We move your existing records across and train your staff until they're comfortable.</p></div>
-            <div class="process-step reveal"><h3>Run &amp; support</h3><p>We host, monitor, back up and keep improving the system after launch.</p></div>
-        </div>
-    </div>
-</section>
-
-<section id="work" class="section">
+<section id="client-work" class="section">
     <div class="container">
         <div class="section-header">
             <span class="eyebrow">Client work</span>
