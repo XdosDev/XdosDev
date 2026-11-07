@@ -343,7 +343,8 @@
 #home-design .cinema-title .eyebrow, #home-design .cinema-title>p:last-child { color:#e0e6ef }
 #home-design .cinema-bottom { max-width:1240px;width:100%;margin:auto auto 0;z-index:2 }
 #home-design .feature-copy .eyebrow, #home-design .feature-copy>p:last-child { color:#dce4ef }
-#home-design .film-controls { position:absolute;z-index:2;right:5vw;bottom:265px;display:flex;gap:8px }
+/* Reserve 24px chat inset + 58px bubble + 16px gap, including while scrolling. */
+#home-design .film-controls { position:absolute;z-index:2;right:max(5vw,98px);bottom:265px;display:flex;gap:8px }
 #home-design .film-controls .motion-toggle { margin:0;background:#080e18e6;min-height:44px;color:white }
 #home-design .showcase-controls .chapter-tabs { max-width:none }
 #home-design .chapter-tabs button { min-height:44px;color:#dce4ef }
@@ -353,7 +354,7 @@
 #home-design header nav { display:flex;order:3;width:100%;justify-content:center;gap:22px;font-size:11px }
 #home-design .cinema { padding:145px 20px 24px;min-height:860px;height:calc(100svh - 29px) }
 #home-design .cinema-title h1 { font-size:40px }
-#home-design .film-controls { right:20px;bottom:325px }
+#home-design .film-controls { right:98px;bottom:325px }
 #home-design .film-controls .motion-toggle { width:auto;min-width:80px;height:44px;padding:8px 12px }
 #home-design .film-controls .motion-toggle span { display:inline }
 }
